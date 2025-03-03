@@ -26,12 +26,12 @@ $serverId = 0;
 // Define the server DNS name or IP Address
 // If encryption is enabled, make sure the name given here
 // corresponds to the certificate's identity
-$ldap_server[$serverId]['server'] = "ldap.mycompany.org";
+$ldap_server[$serverId]['server'] = getenv("LIMESURVEY_LDAP_SERVER");
 
 // Define the TCP port on which the LDAP server is listenning
 // This should be 389 for standard LDAP servers
 // or 636 for standard LDAPS connections
-$ldap_server[$serverId]['port'] = "636";
+$ldap_server[$serverId]['port'] = getenv("LIMESURVEY_LDAP_PORT");
 
 // Define the ldap protocol to use
 // 'ldapv2' and 'ldapv3' are supported
@@ -62,8 +62,8 @@ $ldap_server[$serverId]['referrals'] = false;
 // you are authorized to read its content. Remeber as well that user's DN
 // in AD are in the form of CN=username,CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
 //
-$ldap_server[$serverId]['binddn']	= "uid=mybinduser,dc=mycompany,dc=org";
-$ldap_server[$serverId]['bindpw']	= "AsecretPassword";
+$ldap_server[$serverId]['binddn']	= getenv("LIMESURVEY_LDAP_USER");
+$ldap_server[$serverId]['bindpw']	= getenv("LIMESURVEY_LDAP_PASSWORD");
 
 /********* Copy for more definitions *****
  $serverId++;
@@ -97,13 +97,14 @@ $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = 'Staff with an enabled account';
 
 // Define the ldap base used for user searches
-$ldap_queries[$query_id]['userbase'] = 'ou=staff,dc=mycompany,dc=org';
+$ldap_queries[$query_id]['userbase'] = getenv("LIMESURVEY_LADP_BASE_DN");
 
 // Define the user filter to apply
 // Must begin with '(' and end with ')'
 // Note that for AD, checking the 'active' status of a user is done with the following filter:
 // "(&(objectCategory=Person)(objectClass=user)(!(userAccountControl=514)))"
-$ldap_queries[$query_id]['userfilter'] = '(&(objectClass=inetOrgPerson)(my-fake-accountstatus-attribute=enabled))';
+// $ldap_queries[$query_id]['userfilter'] = '(&(objectClass=inetOrgPerson)(my-fake-accountstatus-attribute=enabled))';
+$ldap_queries[$query_id]['userfilter'] = getenv("LIMESURVEY_LDAP_FILTER");
 
 // Define how deep under the userbase you want to search
 // 'sub' means: search on the entire subtree
