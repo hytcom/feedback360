@@ -35,7 +35,7 @@ $ldap_server[$serverId]['port'] = getenv("LIMESURVEY_LDAP_PORT");
 
 // Define the ldap protocol to use
 // 'ldapv2' and 'ldapv3' are supported
-$ldap_server[$serverId]['protoversion'] = "ldapv2";
+$ldap_server[$serverId]['protoversion'] = getenv("LIMESURVEY_LDAP_PROTOCOL");
 
 // Define the encryption method to use
 // 'ldaps' is supported for 'ldapv2' servers
@@ -94,7 +94,7 @@ $query_id = 0;
 $ldap_queries[$query_id]['ldapServerId'] = 0;
 
 // Give a name that will appear on the user interface
-$ldap_queries[$query_id]['name'] = 'Staff with an enabled account';
+$ldap_queries[$query_id]['name'] = getenv("LIMESURVEY_LDAP_NAME");
 
 // Define the ldap base used for user searches
 $ldap_queries[$query_id]['userbase'] = getenv("LIMESURVEY_LADP_BASE_DN");
@@ -110,21 +110,21 @@ $ldap_queries[$query_id]['userfilter'] = getenv("LIMESURVEY_LDAP_FILTER");
 // 'sub' means: search on the entire subtree
 // 'one' means: only search 1 level under the userbase
 // 'base' means: only search the userbase DN entry
-$ldap_queries[$query_id]['userscope'] = 'sub';
+$ldap_queries[$query_id]['userscope'] = getenv("LIMESURVEY_LDAP_SCOPE");
 
 // Define the user's attribute that provides the firstname
 // do not use capital letters in the attribute name
 // for instance use 'givenname' and not 'givenName'
-$ldap_queries[$query_id]['firstname_attr'] = 'givenname';
+$ldap_queries[$query_id]['firstname_attr'] = getenv("LIMESURVEY_LDAP_ATTR_FIRSTNAME");
 
 // Give the user's attribute that provides the lastname
 // do not use capital letters in the attribute name
-$ldap_queries[$query_id]['lastname_attr'] = 'sn';
+$ldap_queries[$query_id]['lastname_attr'] = getenv("LIMESURVEY_LDAP_ATTR_LASTNAME");;
 
 // Give the user's attribute that provides the email address
 // do not use capital letters in the attribute name
 // If multivalued, only the first entry is read
-$ldap_queries[$query_id]['email_attr'] = 'mail';
+$ldap_queries[$query_id]['email_attr'] = getenv("LIMESURVEY_LDAP_ATTR_EMAIL");
 
 
 // optionally give the user's attributes that provides the
@@ -136,78 +136,78 @@ $ldap_queries[$query_id]['language'] = '';
 $ldap_queries[$query_id]['attr1'] = '';
 $ldap_queries[$query_id]['attr2'] = '';
 
-/********** Other queries examples ********************/
+// /********** Other queries examples ********************/
 
-// This query is an example of a group search in which group members are DNs
-// The query runs in two steps:
-//   1- Look for user candidates matching the group filter part
-//   2- Then, Apply a user filter to user candidates found in step 1
-$query_id++;
-$ldap_queries[$query_id]['ldapServerId'] = 0;
-$ldap_queries[$query_id]['name'] = 'Administrator group';
-// Define a group filter (base, filter, scope)
-// Note that in AD, user groups are defined in the foloowing base:
-// CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
-$ldap_queries[$query_id]['groupbase'] = 'ou=groups,dc=mycompany,dc=org';
-$ldap_queries[$query_id]['groupfilter'] = '(&(objectClass=groupOfNames)(cn=AdministratorGroup))';
-$ldap_queries[$query_id]['groupscope'] = 'sub';
-// Define which group's attribute is used to get users' Ids
-$ldap_queries[$query_id]['groupmemberattr'] = 'member';
-// Define if the groupmemberattr contains users's DNs or NOT
-$ldap_queries[$query_id]['groupmemberisdn'] = true;
+// // This query is an example of a group search in which group members are DNs
+// // The query runs in two steps:
+// //   1- Look for user candidates matching the group filter part
+// //   2- Then, Apply a user filter to user candidates found in step 1
+// $query_id++;
+// $ldap_queries[$query_id]['ldapServerId'] = 0;
+// $ldap_queries[$query_id]['name'] = 'Administrator group';
+// // Define a group filter (base, filter, scope)
+// // Note that in AD, user groups are defined in the foloowing base:
+// // CN=Users,DC=WindowsDomainName,DC=mycompany,DC=org
+// $ldap_queries[$query_id]['groupbase'] = 'ou=groups,dc=mycompany,dc=org';
+// $ldap_queries[$query_id]['groupfilter'] = '(&(objectClass=groupOfNames)(cn=AdministratorGroup))';
+// $ldap_queries[$query_id]['groupscope'] = 'sub';
+// // Define which group's attribute is used to get users' Ids
+// $ldap_queries[$query_id]['groupmemberattr'] = 'member';
+// // Define if the groupmemberattr contains users's DNs or NOT
+// $ldap_queries[$query_id]['groupmemberisdn'] = true;
 
-// optionally you can complete the group query with an additionnal
-// user filter that will be applied to the user's found by the group search
-// Comment the userbase, userfilter, and userscope lines
-// if you don't use this extra filter.
-$ldap_queries[$query_id]['userbase'] = 'ou=users,dc=mycompany,dc=org';
-$ldap_queries[$query_id]['userfilter'] = '(my-fake-accountstatus-attribute=enabled)';
-$ldap_queries[$query_id]['userscope'] = 'sub';
+// // optionally you can complete the group query with an additionnal
+// // user filter that will be applied to the user's found by the group search
+// // Comment the userbase, userfilter, and userscope lines
+// // if you don't use this extra filter.
+// $ldap_queries[$query_id]['userbase'] = 'ou=users,dc=mycompany,dc=org';
+// $ldap_queries[$query_id]['userfilter'] = '(my-fake-accountstatus-attribute=enabled)';
+// $ldap_queries[$query_id]['userscope'] = 'sub';
 
-$ldap_queries[$query_id]['firstname_attr'] = 'givenname';
-$ldap_queries[$query_id]['lastname_attr'] = 'sn';
-$ldap_queries[$query_id]['email_attr'] = 'mail';
-$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
-$ldap_queries[$query_id]['language'] = '';
-$ldap_queries[$query_id]['attr1'] = '';
-$ldap_queries[$query_id]['attr2'] = '';
-
-
-// This query is an example of a group search in which group members are UIDs
-// an additionnal user filter is applied to a already found users
-$query_id++;
-$ldap_queries[$query_id]['ldapServerId'] = 0;
-$ldap_queries[$query_id]['name'] = 'Admins via POSIXGroups';
-$ldap_queries[$query_id]['groupbase'] = 'ou=group,dc=mycompany,dc=org';
-$ldap_queries[$query_id]['groupfilter'] = '(&(cn=admins)(objectclass=posixgroup))';
-$ldap_queries[$query_id]['groupscope'] = 'sub';
-// Define which attribute within the group entry contains users' IDs
-$ldap_queries[$query_id]['groupmemberattr'] = 'memberuid';
-// Declare that groupmemberattr contains users' IDs and not DNs
-$ldap_queries[$query_id]['groupmemberisdn'] = false;
-// Give the name of the attribute in the user entry that matches the
-// 'groupmemberattr' value
-$ldap_queries[$query_id]['useridattr'] = 'uid';
-// Give the base DN used to search the users based on the users' IDs
-$ldap_queries[$query_id]['userbase'] = 'ou=people,dc=mycompany,dc=org';
-// optionally give an additionnal filter to filter users
-$ldap_queries[$query_id]['userfilter'] = '(objectclass=*)';
-$ldap_queries[$query_id]['userscope'] = 'sub';
-
-$ldap_queries[$query_id]['firstname_attr'] = 'givenname';
-$ldap_queries[$query_id]['lastname_attr'] = 'sn';
-$ldap_queries[$query_id]['email_attr'] = 'mail';
-$ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
-$ldap_queries[$query_id]['language'] = '';
-$ldap_queries[$query_id]['attr1'] = '';
-$ldap_queries[$query_id]['attr2'] = '';
-
-/********
- $query_id++;
- //Copy previous definition lines
- ********/
+// $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
+// $ldap_queries[$query_id]['lastname_attr'] = 'sn';
+// $ldap_queries[$query_id]['email_attr'] = 'mail';
+// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+// $ldap_queries[$query_id]['language'] = '';
+// $ldap_queries[$query_id]['attr1'] = '';
+// $ldap_queries[$query_id]['attr2'] = '';
 
 
-//DO NOT CHANGE BELOW HERE --------------------
+// // This query is an example of a group search in which group members are UIDs
+// // an additionnal user filter is applied to a already found users
+// $query_id++;
+// $ldap_queries[$query_id]['ldapServerId'] = 0;
+// $ldap_queries[$query_id]['name'] = 'Admins via POSIXGroups';
+// $ldap_queries[$query_id]['groupbase'] = 'ou=group,dc=mycompany,dc=org';
+// $ldap_queries[$query_id]['groupfilter'] = '(&(cn=admins)(objectclass=posixgroup))';
+// $ldap_queries[$query_id]['groupscope'] = 'sub';
+// // Define which attribute within the group entry contains users' IDs
+// $ldap_queries[$query_id]['groupmemberattr'] = 'memberuid';
+// // Declare that groupmemberattr contains users' IDs and not DNs
+// $ldap_queries[$query_id]['groupmemberisdn'] = false;
+// // Give the name of the attribute in the user entry that matches the
+// // 'groupmemberattr' value
+// $ldap_queries[$query_id]['useridattr'] = 'uid';
+// // Give the base DN used to search the users based on the users' IDs
+// $ldap_queries[$query_id]['userbase'] = 'ou=people,dc=mycompany,dc=org';
+// // optionally give an additionnal filter to filter users
+// $ldap_queries[$query_id]['userfilter'] = '(objectclass=*)';
+// $ldap_queries[$query_id]['userscope'] = 'sub';
+
+// $ldap_queries[$query_id]['firstname_attr'] = 'givenname';
+// $ldap_queries[$query_id]['lastname_attr'] = 'sn';
+// $ldap_queries[$query_id]['email_attr'] = 'mail';
+// $ldap_queries[$query_id]['token_attr'] = ''; // Leave empty for Auto Token generation bu phpsv
+// $ldap_queries[$query_id]['language'] = '';
+// $ldap_queries[$query_id]['attr1'] = '';
+// $ldap_queries[$query_id]['attr2'] = '';
+
+// /********
+//  $query_id++;
+//  //Copy previous definition lines
+//  ********/
+
+
+// //DO NOT CHANGE BELOW HERE --------------------
 
 return array('ldap_server' => $ldap_server, 'ldap_queries' => $ldap_queries);
