@@ -108,35 +108,28 @@ class InstallCommand extends CConsoleCommand
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
-        $this->connection->connectionString = "mysql:host=mariadb;port=3306;";
 
-        $this->output($this->connection->connectionString);
-        
         try {
             $this->output('Opening connection...');
             $this->connection->active = true;
         } catch (Exception $e) {
             throw new CException("Invalid access data. Check your config.php db access data");
         }
-        $this->output('Opened connection');
+
         if (!empty($this->connection) && $this->connection->driverName == 'mysql') {
             /** @var string */
             $dbEngine = getenv('DBENGINE');
-            $this->output("engine: ". $dbEngine);
             if (empty($dbEngine)) {
                 throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
             }
 
-            $this->output("me voy a conectar");
             $this->connection
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
-            $this->output("me conecte");
         }
 
         /** @var string */
         $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
-        $this->output("dbname: ". $dbEngine);
         try {
             switch ($this->connection->driverName) {
                 case 'mysqli':
