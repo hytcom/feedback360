@@ -125,9 +125,11 @@ class InstallCommand extends CConsoleCommand
                 throw new CException('Environment variable DBENGINE is empty, should be either MyISAM or InnoDB');
             }
 
+            $this->output("me voy a conectar");
             $this->connection
                 ->createCommand(new CDbExpression(sprintf('SET default_storage_engine=%s;', $dbEngine)))
                 ->execute();
+            $this->output("me conecte");
         }
 
         /** @var string */
