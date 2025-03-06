@@ -108,6 +108,7 @@ class InstallCommand extends CConsoleCommand
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
+        $this->connection->connectionString = "mysql:host=mariadb;port=3306;";
         echo $this->connection->connectionString;
         try {
             $this->output('Opening connection...');
