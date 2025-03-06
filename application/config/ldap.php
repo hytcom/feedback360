@@ -97,7 +97,7 @@ $ldap_queries[$query_id]['ldapServerId'] = 0;
 $ldap_queries[$query_id]['name'] = getenv("LIMESURVEY_LDAP_NAME");
 
 // Define the ldap base used for user searches
-$ldap_queries[$query_id]['userbase'] = getenv("LIMESURVEY_LADP_BASE_DN");
+$ldap_queries[$query_id]['userbase'] = getenv("LIMESURVEY_LDAP_BASE_DN");
 
 // Define the user filter to apply
 // Must begin with '(' and end with ')'

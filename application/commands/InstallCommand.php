@@ -108,6 +108,7 @@ class InstallCommand extends CConsoleCommand
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', (string) $connectionString);
+        echo $this->connection->connectionString;
         try {
             $this->output('Opening connection...');
             $this->connection->active = true;
