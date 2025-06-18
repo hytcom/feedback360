@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+if [ -n "$PHP_EXTENSIONS" ]; then
+  yum install -y $PHP_EXTENSIONS
+fi
