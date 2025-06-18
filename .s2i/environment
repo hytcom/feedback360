@@ -1,1 +1,1 @@
-PHP_EXTENSIONS=libc-client-dev libfreetype6-dev libmcrypt-dev libpng-dev libjpeg-dev libldap-common libldap2-dev zlib1g-dev libkrb5-dev libtidy-dev libzip-dev libsodium-dev libpq-dev libonig-dev netcat-openbsd git
+PHP_EXTENSIONS=libc-client-devel freetype-devel libmcrypt-devel libpng-devel libjpeg-devel openldap openldap-devel zlib-devel krb5-devel libtidy-devel libzip-devel libsodium-devel postgresql-devel oniguruma-devel nmap-ncat
